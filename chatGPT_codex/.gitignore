@@ -1,0 +1,14 @@
+**/**/node_modules
+
+/claude_opus/**/coverage
+.env
+dist/
+build/
+*.log
+.env*
+.DS_Store
+Thumbs.db
+*.tmp
+*.swp
+.vscode/
+.idea/
