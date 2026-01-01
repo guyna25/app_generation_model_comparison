@@ -1,4 +1,6 @@
 **/**/node_modules
-
-/claude_opus/**/coverage
-.env
+**/**/.next
+/chatGPT_codex/.codex
+/claude_code/.claude
+*.ps1
+**/**/.env

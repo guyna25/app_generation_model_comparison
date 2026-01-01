@@ -1,0 +1,137 @@
+openapi: 3.0.0
+info:
+  title: Todo List API
+  description: API for managing a simple todo list application.
+  version: 1.0.0
+
+paths:
+  /api/todos:
+    get:
+      summary: Retrieve all todo items
+      description: Returns a list of all todo items for the user.
+      responses:
+        '200':
+          description: A JSON array of todo items.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TodoItem'
+    post:
+      summary: Create a new todo item
+      description: Adds a new task to the todo list.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TodoItemInput'
+      responses:
+        '21':
+          description: Todo item created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TodoItem'
+        '400':
+          description: Bad Request - Invalid input data.
+
+  /api/todos/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the todo item to retrieve, update, or delete.
+        schema:
+          type: string
+          example: '63c5d6f3b8f7e4a8b8d4e3e2'
+    put:
+      summary: Update an existing todo item
+      description: Updates the details of a specific todo item by its ID.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TodoItemInput'
+      responses:
+        '200':
+          description: Todo item updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TodoItem'
+        '400':
+          description: Bad Request - Invalid input data.
+        '404':
+          description: Not Found - Todo item with the given ID was not found.
+    delete:
+      summary: Delete a todo item
+      description: Permanently removes a todo item by its ID.
+      responses:
+        '204':
+          description: No Content - The item was deleted successfully.
+        '404':
+          description: Not Found - Todo item with the given ID was not found.
+
+components:
+  schemas:
+    TodoItem:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: Unique identifier for the todo item.
+          example: '63c5d6f3b8f7e4a8b8d4e3e2'
+        title:
+          type: string
+          description: The title of the task.
+          example: 'Finish project proposal'
+        description:
+          type: string
+          description: A detailed description of the task.
+          example: 'Draft the proposal and send it for review.'
+        dueDate:
+          type: string
+          format: date-time
+          description: The date the task is due.
+        isDone:
+          type: boolean
+          description: The completion status of the task.
+          default: false
+        createdAt:
+          type: string
+          format: date-time
+          description: The timestamp of when the item was created.
+        updatedAt:
+          type: string
+          format: date-time
+          description: The timestamp of the last update.
+
+    TodoItemInput:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 4
+          maxLength: 100
+          description: The title of the task.
+          example: 'Buy groceries'
+        description:
+          type: string
+          maxLength: 500
+          description: A detailed description for the task.
+          example: 'Milk, bread, eggs, and cheese.'
+        dueDate:
+          type: string
+          format: date
+          description: The date the task is due.
+          example: '2026-07-21'
+        isDone:
+          type: boolean
+          description: The completion status of the task.
+          example: false
+      required:
+        - title
+        - dueDate
